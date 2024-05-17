@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login page</title>
+    <!-- link icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- link file css -->
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <link rel="stylesheet" href="login3.css">
+</head>
+<body>
+    <div class="contanier">
+        <div class="side-bar">
+            <i class="fa-solid fa-bars menu"></i>
+
+            <div class="social-link">
+                <a href="https://www.facebook.com/"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="https://twitter.com/"><i class="fa-brands fa-twitter"></i></a>
+                <a href="https://www.instagram.com/"><i class="fa-brands fa-instagram"></i></a>
+            </div>
+        </div>
+
+        <div class="big-box">
+            <nav>
+                <img class="logo" src="food.png" alt="">
+                <div class="nav-links">
+                    <a href="#">Home</a>
+                    <a href="#">About</a>
+                    <a class="active" href="#">service</a>
+                    <a  href="#" class="btnLogin">login</a>
+                </div>
+            </nav>
+
+            <div class="content">
+                <div class="div-text">
+                    <h1>Food Zone</h1>
+                    <h3>Restaurants</h3>
+                    <!-- <a href="#" class="btn">About</a> -->
+                </div>
+
+                <div class="div-img">
+                    <!-- <img id="big-img" src="food.png" alt=""> -->
+                </div>
+
+                
+            </div>
+
+            <!-- <div class="small-img">
+                <img onclick="watches(this.src)" src="img/img1.png" alt="">
+                <img onclick="watches(this.src)" src="img/img2.png" alt="">
+                <img onclick="watches(this.src)" src="img/img3.png" alt="">
+            </div> -->
+        </div>
+        <div class="home">
+            <div class="login" >
+                <i id="close" class="fa-solid fa-xmark"></i>
+                <h2>Sign In</h2>
+                <form action="" id="form">
+                    <div class="inp">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" placeholder="username"  id="username" name="username" required>
+                    </div>
+    
+                    <div class="inp">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" placeholder="password" id="password" name="password" required>
+                    </div>
+    
+                    <div class="line-chec">
+                        <div class="chec">
+                            <input type="checkbox">
+                            <span>Remember Me</span>
+                        </div>
+                        <a href="#" class="forg">Forgot Password?</a>
+                    </div>
+    
+                    <button type="submit">Register</button>
+    
+                    <div class="box-soc-login">
+                        <p>Sign In With</p>
+                        <div class="soc-login">
+                            <i class="fa-brands fa-google"></i>
+                            <i class="fa-brands fa-facebook-f"></i>
+                            <i class="fa-brands fa-twitter"></i>
+                        </div>
+                    </div>
+    
+                </form>
+                    </div>
+                
+            </div>
+        
+    
+    </div>
+
+    <!-- <script>
+        let bigImage = document.getElementById('big-img');
+
+        function watches(watch){
+            bigImage.src = watch
+        }
+    </script> -->
+
+    
+
+    <script>
+
+        let closee = document.getElementById('close');
+        let login = document.querySelector('.login');
+        let btnLogin = document.querySelector('.btnLogin');
+
+        btnLogin.onclick = () =>{
+            login.classList.add('active')
+        }
+        closee.onclick = () =>{
+            login.classList.remove('active')
+        }
+    </script>
+    <script>
+        (function() {
+        const form = document.getElementById('form');
+        form.addEventListener('submit', function(e) {
+        // Prevent default behavior
+        e.preventDefault();
+        // Create payload as new FormData object
+        const payload = new FormData(form);
+        // Post the payload using Fetch
+        fetch('http://localhost:8000/accounts/login/', {
+        method: 'POST',
+        body: payload,
+        })
+        .then(response => {
+            if (response.ok) {
+              window.location.href = 'main.html'; // redirect to success page
+            } else {
+              throw new Error('check username or password.');
+            }
+          })
+        .then(res => res.json())
+        .then(data => console.log(data))
+        
+        })
+        })()
+        </script>
+          
+</body>
+</html>

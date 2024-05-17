@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <img src="L2-01.png" alt="">
+</head>
+<body>
+  
+  <div id="product-details"></div>
+  
+  <script>
+    // Get the product ID from the query parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id');
+
+  
+    // Get the authentication token from localStorage
+    const token = localStorage.getItem('token');
+  
+    // Check if the user is authenticated
+    if (token) {
+      // Include the authentication token in the request headers
+      const headers = {
+        'Authorization': `Token ${token}`
+      };
+  
+      // Fetch the product dataش
+      fetch(`http://127.0.0.1:8000/products/products/${productId}/ProductDetails/`, {
+        headers: headers
+      })
+
+        .then(response => response.json())
+        .then(product => {
+          const productDetails = document.querySelector('#product-details');
+  
+          // Generate HTML elements and populate them with the product data
+          const productDiv = document.createElement('div');
+          productDiv.innerHTML = `
+            <h2>${product.product_name}</h2>
+            <p><strong>Category:</strong> ${product.product_description}</p>
+            <p><strong>Price:</strong> ${product.price_M}</p>
+            <p><strong>Description:</strong> ${product.size_L}</p>
+            <p><strong>Admin:</strong> ${product.size_S}</p>
+            <p><strong>Size M:</strong> ${product.size_M}</p>
+            <img src="${product.product_image}" alt="Product Image">
+          `;
+          productDetails.appendChild(productDiv);
+        })
+        .catch(error => {
+          console.error('Error retrieving product data:', error);
+        });
+    } else {
+      alert('Please log in to view product details.');
+      // Redirect to the login page
+      window.location.href = 'index.html';a
+    }
+  </script>
+  
+</body>
+</html> 
+
+  

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="card.css"> -->
+    
+
+    <title>Document</title>
+</head>
+<body>
+    
+
+
+
+
+
+
+<div class="maincontainer">
+    <div class="movies-container" id="restaurants-list"></div>
+  </div>
+  
+  <style>
+   
+    .maincontainer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgb(24, 24, 24);
+      padding: 150px;
+      height: 30%;
+
+    }
+
+  
+    .restaurant {
+      width: 65%;
+      display: inline-block;
+      margin: 10px;
+      background-color: #cacaca;
+      border-radius: 5px;
+      padding: 20px;
+      box-shadow: 0 2px 5px rgb(60, 60, 60);
+      text-align: center;
+    }
+  
+    .restaurant img {
+      
+        width: 100%;
+        height: 150px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+      
+      
+    }
+  
+    .restaurant .title {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+  
+    .restaurant button {
+      padding: 8px 16px;
+      background-color: #ffaa17;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+  
+    .restaurant button:hover {
+      background-color: hsla(35, 89%, 45%, 0.495);
+    }
+  </style>
+  
+
+    <script>
+      (function() {
+        // التحقق من وجود رمز المصادقة في تخزين المحلَّل المحلي
+        const token = localStorage.getItem('token');
+        
+        // التأكد من وجود رمز المصادقة قبل جلب البيانات
+        if (token) {
+          // إعداد رأس الطلب (headers) لتضمين رمز المصادقة
+          const headers = {
+            'Authorization': `Token ${token}`
+          };
+      
+          // استدعاء الـ API باستخدام رأس الطلب المعدَّل
+          fetch('http://127.0.0.1:8000/offers/offers1/', {
+            headers: headers
+          })
+            .then(response => response.json())
+            .then(data => {
+              const restaurantsList = document.querySelector('#restaurants-list');
+              // loop through the restaurant data and dynamically generate HTML elements
+              data.results.forEach(restaurant => {
+                const restaurantDiv = document.createElement('div');
+                restaurantDiv.className = 'restaurant';
+                restaurantDiv.innerHTML = `
+                  <img class="movie-img" src="${restaurant.photo}" alt="${restaurant.name}">
+                  
+                  <div class="movie-info">
+
+                  <h3 class="title">${restaurant.name}</h3>
+                          <p class="title" ><strong>description:</strong> ${restaurant.description}</p>
+                          <p class="title" ><strong>start_date:</strong> ${restaurant.start_date}</p>
+                          <p class="title" ><strong>end_date:</strong> ${restaurant.end_date}</p>
+
+                          <p class="title" ><strong>Admin:</strong> ${restaurant.admin}</p>
+                          <p class="title" ><strong>old_price:</strong> ${restaurant.old_price}</p>
+                          <p class="title" ><strong>new_prices:</strong> ${restaurant.new_prices}</p>
+                          <button onclick="editRestaurant(${restaurant.id})">Edit</button>
+                          <button onclick="deleteRestaurant(${restaurant.id})">Delete</button>
+
+
+
+                  
+                  </div>
+                `;
+                restaurantsList.appendChild(restaurantDiv);
+              });
+            })
+            .catch(error => {
+              console.error(error);
+            });
+        } else {
+          alert('يرجى تسجيل الدخول لعرض البيانات.');
+          window.location.href = `index.html`;
+
+        }
+      })();
+      
+      function editRestaurant(restaurantid) {
+        // Navigate to the edit page with the restaurant ID as a query parameter
+        window.location.href = `edit_offers.html?id=${restaurantid}`;
+      }
+      
+      function showOrders(restaurant_id) {
+        // تنفيذ التوجيه لصفحة الطلبات الخاصة بالمطعم
+        window.location.href = `list_details.html?id=${restaurant_id}`;
+      }
+      
+      function deleteRestaurant(restaurant_id) {
+        // Send a DELETE request to remove the restaurant
+        fetch(`http://127.0.0.1:8000/offers/offers/${restaurant_id}/`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Token ${localStorage.getItem('token')}`
+          }
+        })
+          .then(response => {
+            if (response.ok) {
+              console.log('Restaurant deleted successfully.');
+              location.reload(); // Refresh the page
+            } else {
+              console.error('Failed to delete restaurant. Status:', response.status);
+            }
+          })
+          .catch(error => {
+            console.error('Error deleting restaurant:', error);
+          });
+      }
+      
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,153 @@
+html{
+    scroll-behavior: smooth;
+}
+body{
+    background-color: #ddd;
+    background-position: center;
+    background-size: cover;
+    
+}
+.contanier{
+    width: 85%;
+    margin: auto;
+}
+
+
+.nav-list{
+    /* position: fixed; */
+    top: 0;
+    left: 0;
+    right: 0;
+    background: transparent;
+    z-index: 1000;
+
+
+}
+.nav-list.active{
+    /* background-color: #1c1e22; */
+    border-bottom: 1px solid #8888884a;
+}
+.nav-list nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+}
+.nav-list nav .nav-links a{
+    color: #fff;
+    margin-left: 50px;
+}
+.nav-list nav .nav-links a:hover,
+.nav-list nav .nav-links a.active{
+    color: #9c9b9b;
+}
+
+#btn-menu{
+    display: none;
+}
+
+
+
+table{
+   width: 70%;
+    border-collapse: collapse;
+    justify-content: center;
+    padding-left: 40px;
+    margin-right: 30px;
+    margin: 0 auto;
+    /* margin-top: 80px; */
+    border: 1px solid #ddd;
+
+}
+th{
+   height: 35px;
+   vertical-align:auto;
+   /* background-color: rgb(49, 42, 58); */
+   color: #000000;
+}
+ th, td {
+    padding: 8px;
+    text-align: center;
+    border-bottom:1px solid #ddd;
+    color: #fff;
+  }
+
+/* tr:nth-child(even){
+   background-color: #c5bfbf;
+
+} */
+tr:hover{
+   background-color: #a19f9f;
+  }
+  
+.card-img-top{
+    width: 50px;
+}
+
+  
+  th {
+    background-color:#6d6d6d;
+  }
+  
+  
+  .boxs {
+    display: flex; /* عرض العناصر كمجموعة مرنة */
+    flex-wrap: wrap; /* التفاف العناصر عند الحاجة */
+  }
+  
+  .box {
+    flex: 0 0 50%; /* تعيين عرض العنصر على 50٪ */
+    padding: 10px; /* إضافة بعض التباعد بين الصناديق */
+  }
+  
+  restaurant {
+    width: calc(33.33% - 20px);
+    margin: 10px;
+    padding: 10px;
+    /* border: 1px solid #ccc; */
+  }
+  
+  .restaurant img {
+    width: 90%;
+    height: auto;
+   
+  }
+  .restaurant img:hover{
+    transform: scale(1.2);
+    rotate: -4deg;
+    transition: 0.6s ease-out;
+    
+  }
+  .restaurant h3 {
+    margin-top: 10px;
+    font-size: 18px;
+    text-align: center;
+  }
+
+.portfolio .boxs .box{
+    margin-bottom: 50px;
+    position: relative;
+    overflow: hidden;
+    
+}
+
+.portfolio .boxs.box-hover{ 
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background: #111111b9;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.6s;
+    opacity: 0;
+}
+.portfolio .boxs .box-hover{
+    opacity: 1;
+}
+
+
+  

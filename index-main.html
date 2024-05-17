@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <!-- link file css -->
+    <link rel="stylesheet" href="style-main.css">
+</head>
+<body>
+  
+    <header>
+        <nav class="contanier">
+          <img class="logo" width="240px"  src="L2-01.png" alt="">
+            <i id="btn-menu" class="fa-solid fa-bars"></i>
+            <div class="nav-links">
+                <a href="#home" class="active">Home</a>
+                <a href="#about">About</a>
+                <a href="#services">FeedBack</a>
+                <a href="#Portfolio">Latest restaurant</a>
+                <a href="#Contact">Contact</a>
+                <a href="addresturants.html" target="_blank">resturant</a>
+
+                
+                <a href="index.html" >logout</a>
+
+            </div>
+        </nav>
+    </header>
+<!-- start home sec -->
+    <div class="hero" id="home">
+        <div class="contanier">
+
+
+            <div class="charts">
+
+                <div class="chart">
+                    <div class="movie-img movie-img1"></div>
+
+                    <h3>Orders Today</h3>
+                    <p>Total orders at the end of the week There are a number of subtypes of these field orders.</p>
+                         <span><i class="fa-solid fa-thumbs-up"></i>269</span> 
+                          <span><i class="fa-solid fa-comment"></i>19</span>
+                         <a href="offers.html" title="go to watch offers of products"><img src="1.PNG"  alt=""></a>
+                         <!-- <a href="#" class="btn">Read More</a> -->
+                </div>
+
+                <div class="chart">
+                    <div class="movie-img movie-img2"></div>
+                    <h3>Our Chart</h3>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                         Voluptates ad sit expedita maxime ipsa molestias quasi?</p>
+                         <span><i class="fa-solid fa-thumbs-up"></i>269</span>
+                         <span><i class="fa-solid fa-comment"></i>19</span>
+                         <a href="offers.html" title="go to watch offers of products"><img src="3.PNG"  alt=""></a>
+
+                         <!-- <a href="#" class="btn">Read More</a> -->
+                </div>
+
+                <div class="chart">
+                    <div class="movie-img movie-img3"></div>
+                    <h3>Products SOLD</h3>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                         Voluptates ad sit expedita maxime ipsa molestias quasi?</p>
+                         <span><i class="fa-solid fa-thumbs-up"></i>269</span>
+                         <span><i class="fa-solid fa-comment"></i>19</span>
+                         <a href="product_list.html" title="go to watch product "><img src="2.PNG"  alt=""></a>
+
+                         <!-- <a href="#" class="btn">Read More</a> -->
+                </div>
+            </div>
+            </div>
+        </div>
+    
+
+    <!-- start about sec -->
+
+    <section id="about" class="about">
+        <div class="contanier">
+            <div class="about-img">
+                <img src="about2.jpg" alt="">
+            </div>
+            <div class="content">
+                <h1>About <span>add restaurant</span></h1>
+                <h3>Read the instructions</h3>
+                <p>
+                    Click on the Restaurants button <br>
+Then enter the data in the form, press the Save button,<br> 
+then go to the form category and enter the data,<br>
+then click on the Save button,<br>
+then move to the product form, <br>
+then enter the data, <br>
+click on the Save button, <br>
+then move to the product details form,<br>
+ then enter the data,<br>
+  then click on the Save button 
+                  </p>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- start Services -->
+
+    <section id="services" class="services">
+        <div class="contanier">
+            <div class="sec-top">
+                <h1>Our <span>FeedBack</span></h1>
+            </div>
+           
+
+
+
+<div id="swiperRef" class="swiper mySwiper">
+  <div class="swiper-wrapper">
+    <!-- الشرائح ستتم إضافتها هنا -->
+  </div>
+  <div class="swiper-button-next"></div>
+  <div class="swiper-button-prev"></div>
+</div>
+
+<script>
+  fetch('http://127.0.0.1:8000/accounts/comments/')
+  .then(response => response.json())
+  .then(data => {
+    const swiperWrapper = document.querySelector('.swiper-wrapper');
+
+    data.results.forEach(restaurant => {
+      const swiperSlide = document.createElement('div');
+      swiperSlide.className = 'swiper-slide';
+
+      swiperSlide.innerHTML = `
+        <div class="restSlider">
+          <img src="manager.png" alt="Default Image">
+          <div class="restInfo">
+            <p class="userName">${restaurant.username}</p>
+            <p class="textName">${restaurant.text}</p>
+            <p class="timeName">${restaurant.created_at}</p>
+          </div>
+        </div>
+      `;
+
+      swiperWrapper.appendChild(swiperSlide);
+    });
+
+    new Swiper('#swiperRef', {
+      slidesPerView: 2,
+      spaceBetween: 10,
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      autoplay: {
+        delay: 3000,
+        disableOnInteraction: false,
+      },
+      grabCursor: true,
+    });
+  });
+
+ </script>
+     
+        
+    </section>
+
+
+    <!-- start Portfolio -->
+    <section id="Portfolio" class="portfolio">
+      <div class="contanier">
+          <div class="sec-top">
+              <h1>Latest <span>Restaurant</span></h1>
+          </div>
+    
+          <div class="boxs" id="restaurants-list">
+            <div class="box-hover">
+              
+          </div>
+          </div>
+    
+          <script>
+            (function() {
+              // التحقق من وجود رمز المصادقة في تخزين المحلَّل المحلي
+              const token = localStorage.getItem('token');
+              
+              // التأكد من وجود رمز المصادقة قبل جلب البيانات
+              if (token) {
+                // إعداد رأس الطلب (headers) لتضمين رمز المصادقة
+                const headers = {
+                  'Authorization': `Token ${token}`
+                };
+            
+                // استدعاء الـ API باستخدام رأس الطلب المعدَّل
+                fetch('http://127.0.0.1:8000/products/resturants/', {
+                  headers: headers
+                })
+                  .then(response => response.json())
+                  .then(data => {
+                    const restaurantsList = document.querySelector('#restaurants-list');
+                    // loop through the restaurant data and dynamically generate HTML elements
+                    data.results.forEach(restaurant => {
+                      const restaurantDiv = document.createElement('div');
+                      restaurantDiv.className = 'restaurant';
+                      restaurantDiv.innerHTML = `
+                        <img class="card-img-top" src="${restaurant.logo}" alt="${restaurant.name}">
+                        <h3>${restaurant.name}</h3>
+                      `;
+                      restaurantsList.appendChild(restaurantDiv);
+                    });
+                  })
+                  .catch(error => {
+                    console.error(error);
+                  });
+              } else {
+                alert('يرجى تسجيل الدخول لعرض البيانات.');
+              }
+            })();
+          </script>
+      </div>
+    </section>
+
+            
+
+
+    <!-- start Contact -->
+
+    <section id="Contact" class="contact">
+      
+        <div class="contanier">
+            <div class="sec-top">
+                <h1>Contact <span>Me</span> </h1>
+
+            </div>
+            <div class="add-res">
+              <!-- <i id="close" class="fa-solid fa-xmark"></i> -->
+              <h2>Make Comment</h2>
+              <form  class="comment"action="" id="form">
+                <div class="inp">
+                  <i class="fa-solid fa-user"></i>
+                  <input type="text" placeholder="Enter comment" id="text" name="text" required>
+                </div>
+            
+                <button type="submit">Send</button>
+              </form>
+            </div>
+            <div class="soc-login">
+              <a href="http://google.com"><i class="fa-brands fa-google"></i></a>
+              <a href="http://facebook.com"><i class="fa-brands fa-facebook-f"></i></a>
+              <a href="http://twitter.com"><i class="fa-brands fa-twitter"></i></a>
+              <i class="fa-solid fa-phone"></i>
+
+
+          </div>
+
+
+           </div>
+          <style>
+  .add-res {
+    width: 400px;
+    max-width: 100%;
+    margin: 20px auto 0;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom:40px ;
+  }
+
+  .add-res h2 {
+    margin-bottom: 20px;
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .add-res .inp {
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .add-res .inp i {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    color: #999;
+  }
+
+  .add-res .inp input {
+    width: 100%;
+    padding: 10px 15px 10px 35px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+
+  .add-res button[type="submit"] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #000000;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .add-res button[type="submit"]:hover {
+    background-color:#ffff;
+    color: #000000;
+    border: #ccc solid 1px;
+  }
+  
+</style>
+<style>
+  .copyright {
+    text-align: center;
+    color: #595454;
+    font-size: 14px;
+    height: 80px;
+    background-color: #e8eff7;
+    justify-content: center;
+    padding-top: 30px;
+
+  }
+</style>
+
+<footer>
+  <div class="copyright">
+    &copy; 2023 FoodZone. all rights are save.
+  </div>
+</footer>
+
+
+          
+        
+          
+          
+          
+          
+          <!-- 
+          <script>
+            (function() {
+              const form = document.getElementById('form');
+              form.addEventListener('submit', function(e) {
+                e.preventDefault();
+          
+                 var formValues = new FormData(form)
+          
+                 var text = formValues.get("text");
+          
+                var payload = {"text": text}
+          
+                // Get the authentication token from localStorage
+                const token = localStorage.getItem('token')
+          
+                // Check if the user is authenticated
+                if (token) {
+                  // Include the authentication token in the request headers
+                  const headers = {
+                    'Authorization': `Token ${token}`,
+                    'Content-Type': 'application/json'
+                  };
+                  console.log(payload)
+          
+                  // Post the payload using Fetch, including the headers
+                  fetch('http://localhost:8000/accounts/comments/', {
+                    method: 'POST',
+                    body: JSON.stringify(payload),
+                    headers: headers
+                  })
+                  
+                    .then(response => {
+                      if (response.ok) {
+                        alert('Success! Your comment has been posted.');
+                        // Do something after successful posting
+                      } else {
+                        throw new Error('Network response was not ok.');
+                      }
+                    })
+                    .catch(error => {
+                      console.error(error);
+                    });
+                } else {
+                  alert('Please log in to post a comment.');
+                }
+              });
+            })();
+          </script>
+           -->
+          
+           <script>
+            (function() {
+              const form = document.getElementById('form');
+              form.addEventListener('submit', function(e) {
+                e.preventDefault();
+          
+          
+                 const payload = new FormData(form);
+          
+                 // Iterating over the entries of the FormData object
+                 for (const [key, value] of payload.entries()) {
+                   // Storing the key-value pair in the object
+                   payload[key] = value;
+                 }
+          
+                // Get the authentication token from localStorage
+                const token = localStorage.getItem('token')
+          
+                // Check if the user is authenticated
+                if (token) {
+                  // Include the authentication token in the request headers
+                  const headers = {
+                    'Authorization': `Token ${token}`,
+                    'Content-Type': 'application/json'
+                  };
+                  console.log(payload)
+          
+                  // Post the payload using Fetch, including the headers
+                  fetch('http://localhost:8000/accounts/comments/', {
+                    method: 'POST',
+                    body: JSON.stringify(payload),
+                    headers: headers
+                  })
+                  
+                    .then(response => {
+                      if (response.ok) {
+                        alert('Success! Your comment has been posted.');
+                        // Do something after successful posting
+                      } else {
+                        throw new Error('Network response was not ok.');
+                      }
+                    })
+                    .catch(error => {
+                      console.error(error);
+                    });
+                } else {
+                  alert('Please log in to post a comment.');
+                }
+              });
+            })();
+          </script>
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+           
+          
+    </section>
+    
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+    <script src="main.js"></script>
+
+    <!--  -->
+</body>
+
+</html>

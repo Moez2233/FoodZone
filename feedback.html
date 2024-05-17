@@ -1,0 +1,261 @@
+
+<div class="add-rest">
+    <i id="close" class="fa-solid fa-xmark"></i>
+    <h2>Add Resturant</h2>
+    <form action="" id="form">
+<div class="inp">
+<i class="fa-solid fa-user"></i>
+<input type="text" placeholder="Enter comment"  id="text" name="text" required >
+</div>
+
+<button type="submit">Send</button>
+
+</div>
+</form>
+</div>
+</div>
+<script >
+
+    
+
+    (function() {
+    const form = document.getElementById('form');
+    form.addEventListener('submit', function(e) {
+    // Prevent default behavior
+    e.preventDefault();
+    // Create payload as new FormData object
+    const payload = new FormData(form);
+    // Post the payload using Fetch
+    fetch('http://127.0.0.1:8000/accounts/comments/', {
+    method: 'POST',
+    body: payload,
+    })
+   
+    .then(response => {
+        if (response.ok) {
+          window.location.href = 'categery.html'; // redirect to success page
+        } else {
+          throw new Error('Network response was not ok.');
+        }
+      })
+    .then(res => res.json())
+    .then(data => console.log(data))
+    })
+    })()
+    
+</script>  
+
+
+
+
+
+<div class="box">
+    <div class="box-hover" id="restaurants-list">
+        <img id="profile-image" src="d.jpg" alt="Profile Image">
+    </div>
+</div>
+</div>
+<script>
+    const profileImage = document.getElementById('profile-image');
+
+  // استدعاء البيانات من قاعدة البيانات باستخدام Fetch API
+fetch('http://127.0.0.1:8000/accounts/comments/')
+.then(response => response.json())
+.then(data => {
+  const restaurantsList = document.querySelector('#restaurants-list');
+  // loop through the restaurant data and dynamically generate HTML elements
+  data.results.forEach(restaurant => {
+    
+    const restaurantDiv = document.createElement('div');
+    restaurantDiv.className = 'restaurant';
+    
+    restaurantDiv.innerHTML = `
+      <h3>${restaurant.username}</h3>
+      <h3>${restaurant.text}</h3>
+      <h3>${restaurant.created_at}</h3>
+    
+      
+  
+    `;
+    restaurantsList.appendChild(restaurantDiv);
+  });
+});
+
+function editRestaurant(restaurant_id) {
+// Navigate to the edit page with the restaurant ID as a query parameter
+window.location.href = `edit_rest.html?id=${restaurant_id}`;
+}
+
+function deleteRestaurant(restaurant_id) {
+// Send a DELETE request to remove the restaurant
+fetch(`http://127.0.0.1:8000/products/resturants/${restaurant_id}/`, {
+  method: 'DELETE'
+})
+  .then(response => {
+    if (response.ok) {
+      console.log('Restaurant deleted successfully.');
+      location.reload(); // Refresh the page
+    } else {
+      console.error('Failed to delete restaurant. Status:', response.status);
+    }
+  })
+  .catch(error => {
+    console.error('Error deleting restaurant:', error);
+  });
+}
+
+</script>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="card.css"> -->
+    
+
+    <title>categories</title>
+</head>
+<body>
+    
+
+
+
+
+
+
+<div class="maincontainer">
+    <div class="movies-container" id="categoriess-list"></div>
+  </div>
+  
+  <style>
+   
+    .maincontainer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgb(24, 24, 24);
+      padding: 150px;
+      height: 30%;
+
+    }
+
+  
+    .categories {
+      width: 25%;
+      display: inline-block;
+      margin: 10px;
+      background-color: #cacaca;
+      border-radius: 5px;
+      padding: 20px;
+      box-shadow: 0 2px 5px rgb(60, 60, 60);
+      text-align: center;
+    }
+  
+    .categories img {
+      
+        width: 100%;
+        height: 150px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+      
+      
+    }
+  
+    .categories .title {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+  
+    .categories button {
+      padding: 8px 16px;
+      background-color: #ffaa17;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+  
+    .categories button:hover {
+      background-color: hsla(35, 89%, 45%, 0.495);
+    }
+  </style>
+  
+
+    <script>
+      (function() {
+        // التحقق من وجود رمز المصادقة في تخزين المحلَّل المحلي
+        const token = localStorage.getItem('token');
+        
+        // التأكد من وجود رمز المصادقة قبل جلب البيانات
+        if (token) {
+          // إعداد رأس الطلب (headers) لتضمين رمز المصادقة
+          const headers = {
+            'Authorization': `Token ${token}`
+          };
+      
+          // استدعاء الـ API باستخدام رأس الطلب المعدَّل
+          fetch('http://127.0.0.1:8000/products/categories/', {
+            headers: headers
+          })
+            .then(response => response.json())
+            .then(data => {
+              const categoriessList = document.querySelector('#categoriess-list');
+              // loop through the categories data and dynamically generate HTML elements
+              data.results.forEach(categories => {
+                const categoriesDiv = document.createElement('div');
+                categoriesDiv.className = '';
+                categoriesDiv.innerHTML = `
+                  <img class="movie-img" src="${categories.logo}" alt="${categories.name}">
+                  
+                  <div class="movie-info">
+
+                  <h3 class="title">${categories.name}</h3>
+                          <button onclick="editcategories(${categories.id})">Edit</button>
+                          <button onclick="deletecategories(${categories.id})">Delete</button>
+                  
+                  </div>
+                `;
+                categoriessList.appendChild(categoriesDiv);
+              });
+            })
+            .catch(error => {
+              console.error(error);
+            });
+        } else {
+          alert('يرجى تسجيل الدخول لعرض البيانات.');
+        }
+      })();
+      
+      function editcategories(categories_id) {
+        // Navigate to the edit page with the categories ID as a query parameter
+        window.location.href = `edit_rest.html?id=${categories_id}`;
+      }
+      
+      function deletecategories(categories_id) {
+        // Send a DELETE request to remove the categories
+        fetch(`http://127.0.0.1:8000/products/categories/${categories_id}/`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Token ${localStorage.getItem('token')}`
+          }
+        })
+          .then(response => {
+            if (response.ok) {
+              console.log('categories deleted successfully.');
+              location.reload(); // Refresh the page
+            } else {
+              console.error('Failed to delete categories. Status:', response.status);
+            }
+          })
+          .catch(error => {
+            console.error('Error deleting categories:', error);
+          });
+      }
+      
+    </script>
+
+</body>
+</html>

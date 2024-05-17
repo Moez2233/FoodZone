@@ -1,0 +1,169 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style-main.css">
+    
+
+    <title>list_cat</title>
+    <style>
+      
+    
+  
+      /* Rest of your styles */
+      .maincontainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-image: url(/photo/hero-bg.png);
+        background-position: center;
+        background-size: cover;
+        padding: 150px;
+        padding-left: 300px;
+        
+      }
+    
+      .restaurant {
+        width: 25%;
+        display: inline-block;
+        margin: 10px;
+        background-color: #cacaca;
+        border-radius: 5px;
+        padding: 20px;
+        box-shadow: 0 2px 5px rgb(60, 60, 60);
+        text-align: center;
+      }
+    
+      .restaurant img {
+        width: 100%;
+        height: 150px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+      }
+    
+      .restaurant .title {
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+    
+      .restaurant button {
+        padding: 8px 16px;
+        background-color: #ffaa17;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+    
+      .restaurant button:hover {
+        background-color: hsla(35, 89%, 45%, 0.495);
+      }
+    </style>
+</head>
+<body>
+  <header>
+    <nav class="contanier">
+        <img class="logo" width="240px" src="L2-01.png" alt="">
+        <i id="btn-menu" class="fa-solid fa-bars"></i>
+        <div class="nav-links">
+            <a href="index-main.html" class="active">Home</a>
+                <a href="index-main.html">About</a>
+                <a href="index-main.html">Services</a>
+                <a href="index-main.html">Contact</a>
+                <a href="product.html" target="_blank">AddProduct</a>
+                <a href="index.html" >logout</a>
+        </div>
+    </nav>
+</header>
+
+  <div class="maincontainer">
+    <div class="movies-container-1" id="restaurants-list"></div>
+  </div>
+  
+
+    <script>
+      (function() {
+        // التحقق من وجود رمز المصادقة في تخزين المحلَّل المحلي
+        const token = localStorage.getItem('token');
+        
+        // التأكد من وجود رمز المصادقة قبل جلب البيانات
+        if (token) {
+          // إعداد رأس الطلب (headers) لتضمين رمز المصادقة
+          const headers = {
+            'Authorization': `Token ${token}`
+          };
+      
+          
+          
+          // استدعاء الـ API باستخدام رأس الطلب المعدَّل
+          fetch('http://127.0.0.1:8000/products/categories/', {
+            headers: headers
+          })
+            .then(response => response.json())
+            .then(data => {
+              const restaurantsList = document.querySelector('#restaurants-list');
+              // loop through the restaurant data and dynamically generate HTML elements
+              data.results.forEach(restaurant => {
+                const restaurantDiv = document.createElement('div');
+                restaurantDiv.className = 'restaurant';
+                restaurantDiv.innerHTML = `
+                  <img class="movie-img" src="${restaurant.logo}" alt="${restaurant.name}">
+                  
+                  <div class="movie-info">
+
+                  <h3 class="title">${restaurant.name}</h3>
+                  <h3 class="title">${restaurant.resturant}</h3>
+
+           
+                          <button onclick="editRestaurant(${restaurant.id})">Edit</button>
+                          <button onclick="deleteRestaurant(${restaurant.id})">Delete</button>
+                  
+                  </div>
+                `;
+                restaurantsList.appendChild(restaurantDiv);
+              });
+            })
+            .catch(error => {
+              console.error(error);
+            });
+        } else {
+          alert('يرجى تسجيل الدخول لعرض البيانات.');
+        }
+      })();
+      
+      function editRestaurant(categories_id) {
+        // Navigate to the edit page with the restaurant ID as a query parameter
+        window.location.href = `edit_cat.html?id=${categories_id}`;
+      }
+      
+      
+      function deleteRestaurant(categories_id) {
+        // Send a DELETE request to remove the restaurant
+        fetch(`http://127.0.0.1:8000/products/categories/${categories_id}/`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Token ${localStorage.getItem('token')}`
+          }
+        })
+        
+        .then(response => {
+            if (response.ok) {
+              console.log('Restaurant deleted successfully.');
+              location.reload(); // Refresh the page
+            } else {
+              console.error('Failed to delete restaurant. Status:', response.status);
+            }
+          })
+          .catch(error => {
+            console.error('Error deleting restaurant:', error);
+          });
+      }
+      
+    </script>
+
+</body>
+</html>

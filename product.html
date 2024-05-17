@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style-main.css">
+    <title>AddProduct</title>
+</head>
+<body>
+    <header>
+        <nav class="contanier">
+          <img class="logo" width="240px"  src="L2-01.png" alt="">
+          <i id="btn-menu" class="fa-solid fa-bars"></i>
+            <div class="nav-links">
+                <a href="index-main.html" class="active">Home</a>
+                <a href="index-main.html#about">About</a>
+                <a href="index-main.html#services">Services</a>
+                <a href="#">Contact</a>
+                <a href="index-main.html#Portfolio">restaurant</a>
+                    <a href="index.html" >logout</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="contain-product">
+        <div class="add-product">
+            <h2>Add Product</h2>
+            <form action="" id="form" >
+                <div class="inp">
+                  <input type="text" placeholder="Name" id="name" name="name">
+              </div>
+              <div class="inp">
+                  <input type="text" placeholder="Name Arabic" id="name_ar" name="name_ar">
+              </div>
+              <div class="inp">
+                  <input type="text" placeholder="Description" id="description" name="description">
+              </div>
+              <div class="inp">
+                  <input type="text" placeholder="Description Arabic" id="description_ar" name="description_ar">
+              </div>
+              <div class="inp">
+                 <input type="file" title="choose logo"  style="display: inline-block; padding-left:140px;" id="photo" name="photo" >
+              </div>
+    <br>
+    <div class="inp">
+        <label  class="la" for="resturant" style="padding-right: 5px;" >Resturants</label>
+
+        <select id="myList"  name="resturant"></select>
+    
+    </div>
+    <div class="inp">
+        <label  class="la" for="resturant" style="padding-right: 5px;" >Categories</label>
+
+
+        <select id="myList1"  name="categories"></select>
+    
+    </div>
+    <button type="submit">Add Products</button>
+    </form>
+    </div>
+    </div>
+    <script>
+        (function() {
+            // التحقق من وجود رمز المصادقة في تخزين المحلَّل المحلي
+            const token = localStorage.getItem('token');
+            
+            // التأكد من وجود رمز المصادقة قبل جلب البيانات
+            if (token) {
+              // إعداد رأس الطلب (headers) لتضمين رمز المصادقة
+              const headers = {
+                'Authorization': `Token ${token}`
+              };
+          
+              // استدعاء الـ API باستخدام رأس الطلب المعدَّل
+              fetch('http://127.0.0.1:8000/products/categories1/', {
+                headers: headers
+              })
+                .then(response => response.json())
+                .then(data => {
+                  const myList = document.querySelector('#myList1');
+                  data.results.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.id;
+                    option.text = item.name;
+          
+                    myList.add(option);
+                  });
+                })
+                .catch(error => {
+                  console.error(error);
+                });
+            } else {
+              alert('يرجى تسجيل الدخول لعرض البيانات.');
+            }
+          })();
+          
+      </script>
+           
+<script>
+    (function() {
+        // التحقق من وجود رمز المصادقة في تخزين المحلَّل المحلي
+        const token = localStorage.getItem('token');
+        
+        // التأكد من وجود رمز المصادقة قبل جلب البيانات
+        if (token) {
+          // إعداد رأس الطلب (headers) لتضمين رمز المصادقة
+          const headers = {
+            'Authorization': `Token ${token}`
+          };
+      
+          // استدعاء الـ API باستخدام رأس الطلب المعدَّل
+          fetch('http://127.0.0.1:8000/products/resturants1/', {
+            headers: headers
+          })
+            .then(response => response.json())
+            .then(data => {
+              const myList = document.querySelector('#myList');
+              data.results.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.id;
+                option.text = item.name;
+      
+                myList.add(option);
+              });
+            })
+            .catch(error => {
+              console.error(error);
+            });
+        } else {
+          alert('يرجى تسجيل الدخول لعرض البيانات.');
+        }
+      })();
+      
+  </script>
+        
+  <script>(function() {
+    const form = document.getElementById('form');
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+  
+      const fileInput = document.getElementById('photo');
+      const file = fileInput.files[0];
+  
+      const payload = new FormData(form);
+      payload.append('file', file); // Append the file to the payload
+  
+      // Get the authentication token from localStorage
+      const token = localStorage.getItem('token');
+  
+      // Check if the user is authenticated
+      if (token) {
+        // Include the authentication token in the request headers
+        const headers = {
+          'Authorization': `Token ${token}`,
+        };
+  
+        // Post the payload using Fetch, including the headers
+        fetch('http://127.0.0.1:8000/products/products/', {
+          method: 'POST',
+          body: payload,
+          headers: headers
+        })
+          .then(response => {
+            if (response.ok) {
+              alert('Success! Your comment has been posted.');
+              window.location.href = 'list_product.html'; // redirect to success page
+        } else {
+              throw new Error('Network response was not ok.');
+            }
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      } else {
+        alert('Please log in to post a comment.');
+      }
+    });
+  })();
+  </script>
+</body>
+</html>

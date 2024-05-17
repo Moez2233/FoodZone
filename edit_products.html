@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+    <!-- <link href="test.css" rel="stylesheet" /> -->
+    <!-- <link href="add.css" rel="stylesheet" > -->
+    <link href="style.css" rel="stylesheet" />
+    <link href="style-main.css" rel="stylesheet" />
+   
+    <title>Add Resturants</title>
+   
+</head>
+<body>
+  
+
+    <!-- navbaar ------------------------------------------------------------->
+    
+    <header>
+        <nav>
+            <nav class="contanier">
+                <img class="logo" src="#" alt="">
+                <i id="btn-menu" class="fa-solid fa-bars"></i>
+                <div class="nav-links">
+                    <a href="index-main.html" class="active">Home</a>
+                    <a href="index-main.html">About</a>
+                    <a href="index-main.html">Services</a>
+                    <a href="index-main.html">Contact</a>
+                    <a href="offers.html" target="_blank">offers</a>
+                    <a href="index.html" >logout</a>
+                </div>
+            </nav>
+    </header>
+
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-image: url(photo/hero-bg.png);
+            background-position: center;
+            background-size: cover;
+   
+            position: relative;
+          }
+      
+          h2 {
+            color: #333;
+            margin-bottom: 20px;
+          }
+      
+          form {
+            background-color: rgb(255, 255, 255, 0.1);
+            
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 2px 5px rgb(50, 50, 49);
+            width: 30%;
+            margin: auto;
+            margin-top: 10%;
+            margin-left: 35%;
+            
+           
+
+          }
+          .pic{
+            width: 20%;
+            height: auto;
+           
+           
+          
+          }
+      
+          label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+          }
+     
+          input[type="file"],
+          input[type="text"] {
+            width: 70%;
+            padding: 8px;
+            /* border: 1px solid #ccc; */
+            border-radius: 4px;
+            margin-bottom: 10px;
+          }
+      
+          button[type="submit"] {
+            padding: 8px 16px;
+            background-color:#ffaa17;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 40%;
+            margin-left: 30%;
+          }
+      
+          button[type="submit"]:hover {
+            background-color: hsla(35, 89%, 45%, 0.495);
+          }
+        </style>
+        <title>Edit Restaurant</title>
+      </head>
+      <body>
+        <div id="restaurant-details"></div>
+      
+        <script>
+          // Retrieve the restaurant ID from the query parameter
+          const urlParams = new URLSearchParams(window.location.search);
+          const restaurantId = urlParams.get('id');
+        
+          // Get the authentication token from localStorage
+          const token = localStorage.getItem('token');
+        
+          // Check if the user is authenticated
+          if (token) {
+            // Include the authentication token in the request headers
+            const headers = {
+              'Authorization': `Token ${token}`
+            };
+        
+            // Fetch the restaurant data for editing
+            fetch(`http://127.0.0.1:8000/products/products/${restaurantId}/`, {
+              headers: headers
+            })
+              .then(response => response.json())
+              .then(restaurant => {
+                const restaurantDetails = document.querySelector('#restaurant-details');
+        
+                // Generate HTML elements and populate them with the restaurant data
+                const restaurantForm = document.createElement('form');
+                restaurantForm.innerHTML = `
+                  <label for="logo">Logo:</label>
+                  <img  class="pic" src="${restaurant.photo}"  alt="Restaurant Logo">
+                  <input type="file" id="photo" name="photo" accept="image/*">
+  
+                  <label for="name">Name:</label>
+                  <input type="text" id="name" name="name" value="${restaurant.name}">
+  
+                  <label for="description">Description:</label>
+                  <input type="text" id="description" name="description" value="${restaurant.description}">
+  
+                  <label for="publish_date">Publish Date:</label>
+                  <input type="text" id="publish_date" name="publish_date" value="${restaurant.publish_date}">
+  
+                  <button type="submit">Save Changes</button>
+                `;
+                restaurantDetails.appendChild(restaurantForm);
+        
+                // Add event listener to the form submit event
+                restaurantForm.addEventListener('submit', event => {
+                  event.preventDefault(); // prevent the default form submission
+        
+                  // Get the form data
+                  const formData = new FormData(restaurantForm);
+        
+                  // Send a PUT request to update the restaurant data
+                  fetch(`http://127.0.0.1:8000/products/products/${restaurantId}/`, {
+                    method: 'PUT',
+                    body: formData,
+                    headers: headers
+                  })
+                    .then(response => response.json())
+                    .then(updatedRestaurant => {
+                      console.log('Restaurant updated:', updatedRestaurant);
+                      // Redirect to the restaurant details page
+                      window.location.href = `list_product.html?admin=${restaurant.admin}`;
+                    })
+                    .catch(error => {
+                      console.error('Error updating restaurant data:', error);
+                    });
+                });
+              })
+              .catch(error => {
+                console.error('Error retrieving restaurant data:', error);
+              });
+          } else {
+            alert('Please log in to edit the restaurant.');
+            // Redirect to the login page
+            window.location.href = 'index.html';
+          }
+        </script>
+      </body>
+      </html>
+</body>
+</html>

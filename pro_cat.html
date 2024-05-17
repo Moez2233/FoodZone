@@ -1,0 +1,25 @@
+<div id="products-container"></div>
+<script>
+    const productsContainer = document.getElementById('products-container');
+
+fetch(http://127.0.0.1:8000/products/resturants/${resturant_id}/categories/${categories_id}/products/`)
+  .then(response => response.json())
+  .then(data => {
+    // تعامل مع البيانات المسترجعة هنا
+    // يمكنك استخدامها لإنشاء عناصر HTML وعرض المنتجات
+
+    data.forEach(product => {
+      // إنشاء عنصر HTML لعرض المنتج
+      const productElement = document.createElement('div');
+      productElement.textContent = product.name;
+      
+      // إضافة العنصر إلى عنصر العرض الخاص بالمنتجات
+      productsContainer.appendChild(productElement);
+    });
+  })
+  .catch(error => {
+    // التعامل مع الأخطاء هنا
+    console.error('An error occurred:', error);
+  });
+
+</script>

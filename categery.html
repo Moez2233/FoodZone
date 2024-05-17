@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style-main.css">
+    <title> Add Categeries</title>
+  </head>
+<body>
+     <!-- navbaar ------------------------------------------------------------->
+    
+     <header>
+        <nav class="contanier">
+            <img class="logo" src="#" alt="">
+            <i id="btn-menu" class="fa-solid fa-bars"></i>
+            <div class="nav-links">
+                <a href="index-main.html" class="active">Home</a>
+                <a href="index-main.html#about">About</a>
+                <a href="index-main.html#services">Services</a>
+                <a href="#">Contact</a>
+                <a href="index-main.html#Portfolio">restaurant</a>
+                    <a href="index.html" >logout</a>
+            </div>
+        </nav>
+    </header>
+<!-- ------------------------------------------ -->
+
+<div class="contain-categery">
+    <div class="add-categery">
+        <h2>Add Categery</h2>
+        <form action="" id="form" >
+
+            <div class="inp">
+                <!-- <label  class="la" for="name">Name:</label> -->
+                <!-- <i class="fa-solid fa-user"></i> -->
+                <input type="text" placeholder="Name" id="name" name="name">
+            </div>
+          
+            <div class="inp">
+                <!-- <i class="fa-solid fa-user"></i> -->
+                <!-- <label  class="la" for="name">Name Arabic:</label> -->
+
+                <input type="text" placeholder="Name Arabic:" id="name_ar" name="name_ar">
+            </div>
+            <div class="inp">
+              <input type="file" id="logo" name="logo" required>
+          </div><br>
+<div class="inp">
+    <label  class="la" for="resturant" style="padding-right: 5px;" >Resturant</label>
+
+    <select id="myList"  name="resturant"></select>
+
+</div>
+<button type="submit">Add Categery</button>
+</form>
+</div>
+</div>
+<script>
+    (function() {
+        // التحقق من وجود رمز المصادقة في تخزين المحلَّل المحلي
+        const token = localStorage.getItem('token');
+        
+        // التأكد من وجود رمز المصادقة قبل جلب البيانات
+        if (token) {
+          // إعداد رأس الطلب (headers) لتضمين رمز المصادقة
+          const headers = {
+            'Authorization': `Token ${token}`
+          };
+      
+          // استدعاء الـ API باستخدام رأس الطلب المعدَّل
+          fetch('http://127.0.0.1:8000/products/resturants1/', {
+            headers: headers
+          })
+            .then(response => response.json())
+            .then(data => {
+              const myList = document.querySelector('#myList');
+              data.results.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.id;
+                option.text = item.name;
+      
+                myList.add(option);
+              });
+            })
+            .catch(error => {
+              console.error(error);
+            });
+        } else {
+          alert('يرجى تسجيل الدخول لعرض البيانات.');
+        }
+      })();
+      
+  </script>
+        
+  <!-- <script >
+
+    
+
+    (function() {
+    const form = document.getElementById('form');
+    form.addEventListener('submit', function(e) {
+    // Prevent default behavior
+    e.preventDefault();
+    // Create payload as new FormData object
+    const payload = new FormData(form);
+    // Post the payload using Fetch
+    fetch('http://127.0.0.1:8000/products/categories/', {
+    method: 'POST',
+    body: payload,
+    })
+    .then(response => {
+        if (response.ok) {
+         // window.location.href = 'product.html'; // redirect to success page
+        } else {
+          throw new Error('Network response was not ok.');
+        }
+      })
+   
+    .then(res => res.json())
+    .then(data => console.log(data)) 
+    })
+    })()
+    
+</script>   -->
+
+
+  
+  <script>(function() {
+    const form = document.getElementById('form');
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+  
+      const fileInput = document.getElementById('logo');
+      const file = fileInput.files[0];
+  
+      const payload = new FormData(form);
+      payload.append('file', file); // Append the file to the payload
+  
+      // Get the authentication token from localStorage
+      const token = localStorage.getItem('token');
+  
+      // Check if the user is authenticated
+      if (token) {
+        // Include the authentication token in the request headers
+        const headers = {
+          'Authorization': `Token ${token}`,
+        };
+  
+        // Post the payload using Fetch, including the headers
+        fetch('http://127.0.0.1:8000/products/categories/', {
+          method: 'POST',
+          body: payload,
+          headers: headers
+        })
+          .then(response => {
+            if (response.ok) {
+              alert('Success! Your categories  has been posted.');
+              window.location.href = 'list_cat.html'; // redirect to success page
+        } else {
+              throw new Error('Network response was not ok.');
+            }
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      } else {
+        alert('Please log in to add categories.');
+      }
+    });
+  })();
+  </script
+        
+</body>
+
+</html>

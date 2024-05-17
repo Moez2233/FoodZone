@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+
+    <!-- link Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <!-- link file css -->
+    <link rel="stylesheet" href="style.css">
+    <!-- <link rel="stylesheet" href="add.css"> -->
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#" class="logo1"></a>
+            <div class="nav-links1">
+                <!-- <a href="#">Home</a>
+                <a href="#">about</a>
+                <a href="#">services</a>
+                <a href="#">contact</a> -->
+                <a href="#" class="btnLogin">login</a>
+            </div>
+        </nav>
+    </header>
+   
+
+    <div class="home">
+      
+        <div class="login">
+            <i id="close" class="fa-solid fa-xmark"></i>
+            <h2>Sign In</h2>
+            <form action="" id="form">
+                <div class="inp">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" placeholder="username" id="username" name="username">
+                </div>
+
+                <div class="inp">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" placeholder="password" id="password" name="password">
+                </div>
+
+                <div class="line-chec">
+                    <div class="chec">
+                        <input type="checkbox">
+                        <span>Remember Me</span>
+                    </div>
+                    <a href="#" class="forg">Forgot Password?</a>
+                </div>
+
+                <button type="submit">Sign In</a></button>
+
+                <div class="box-soc-login">
+                    <p>Sign In With</p>
+                    <div class="soc-login">
+                        <i class="fa-brands fa-google"></i>
+                        <i class="fa-brands fa-facebook-f"></i>
+                        <i class="fa-brands fa-twitter"></i>
+                    </div>
+                </div>
+
+                <p class="regs">Dont' Have acount? <a href="#">Register</a></p>
+            </form>
+                </div>
+            
+        </div>
+    
+
+
+    <script>
+
+        let closee = document.getElementById('close');
+        let login = document.querySelector('.login');
+        let btnLogin = document.querySelector('.btnLogin');
+
+        btnLogin.onclick = () =>{
+            login.classList.add('active')
+        }
+        closee.onclick = () =>{
+            login.classList.remove('active')
+        }
+    </script>
+    <!-- <script>
+      
+        (function() {
+        const form = document.getElementById('form');
+        form.addEventListener('submit', function(e) {
+        // Prevent default behavior
+        e.preventDefault();
+        // Create payload as new FormData object
+        const payload = new FormData(form);
+        // Post the payload using Fetch
+        fetch('http://localhost:8000/accounts/login/', {
+        method: 'POST',
+        body: payload,
+        })
+        .then(response => {
+            if (response.ok) {
+              //window.location.href = 'index-main.html'; // redirect to success page
+            } else {
+              throw new Error('check username or password.');
+            }
+          })
+        .then(res => res.json())
+        .then(data => console.log(data))
+        
+        })
+      })()
+
+    </script>
+        -->
+        <!-- <script>
+          (function() {
+            const form = document.getElementById('form');
+            form.addEventListener('submit', function(e) {
+              // Prevent default behavior
+              e.preventDefault();
+              
+              // Create payload as new FormData object
+              const payload = new FormData(form);
+              
+              // Post the payload using Fetch
+              fetch('http://localhost:8000/accounts/login/', {
+                method: 'POST',
+                body: payload,
+              })
+                .then(response => {
+                  if (response.ok) {
+                    return response.json();
+                  } else {
+                    throw new Error('Check username or password.');
+                  }
+                })
+                .then(data => {
+                  console.log('Data:', data); // Log the data object for debugging
+                  
+                  // Store the authentication token in localStorage
+                 
+                  
+                  // Redirect to the success page
+                 //window.location.href = 'post_feedback.html';
+
+                })
+                .catch(error => {
+                  console.log(error);
+                });
+            });
+          })();
+        </script> -->
+      <script>
+        (function() {
+          const form = document.getElementById('form');
+          form.addEventListener('submit', function(e) {
+            // Prevent default behavior
+            e.preventDefault();
+        
+            // Create payload as new FormData object
+            const payload = new FormData(form);
+        
+            // Post the payload using Fetch
+            fetch('http://localhost:8000/accounts/login/', {
+              method: 'POST',
+              body: payload,
+            })
+              .then(response => {
+                if (response.ok) {
+                  return response.json();
+                } else {
+                  throw new Error('Check username or password.');
+                }
+              })
+              .then(data => {
+                console.log('Data:', data); // Log the data object for debugging
+        
+                // Store the authentication token in localStorage
+                localStorage.setItem('token', data.Response.token);
+                console.log(localStorage.getItem('token'));
+                console.log(data.Response.token);
+        
+                // Check if the user is an admin
+                if (data.Response.is_admin) {
+                  // Redirect to the success page
+                  window.location.href = 'index-main.html';
+                } else {
+                  // Show an error message or take any other action
+                  console.log('Access denied. User is not an admin.');
+                  alert(' Sorry . You Must be Logged in');
+
+                }
+              })
+              .catch(error => {
+                console.log(error);
+              });
+          });
+        })();
+        
+      </script>
+        
+        
+      </body>
+</html>

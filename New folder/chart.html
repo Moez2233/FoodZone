@@ -1,0 +1,55 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css">
+<script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+<link rel="stylesheet" href="style.css">
+<style>
+    
+</style>
+<body class="chart">
+    <header>
+        <nav>
+            <a href="#" class="logo">Food Zone</a>
+            <div class="nav-links">
+                <a href="main.html">Home</a>
+                <a href="chart.html">chart</a>
+                <a href="addresturants.html">services</a>
+                <a href="#">contact</a>
+                <a href="index.html" >logout</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="swiper sample-slider">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide"><img src="Capture.PNG"></div>
+            <div class="swiper-slide"><img src="Capture.PNG"></div>
+            
+        </div>
+        <!-- <div class="swiper-pagination"></div> -->
+
+        
+          
+
+    
+</body>
+</div>
+
+<script>
+    const swiper = new Swiper('.sample-slider', {
+        loop: true,                         //loop
+        effect: 'flip',                     //apply flip effect
+        speed: 2000,                        //slide speed
+        autoplay: {                         //auto play
+            delay: 2000,
+        },
+        pagination: {                       //pagination(dots)
+            el: '.swiper-pagination',
+        },
+        navigation: {                       //navigation(arrows)
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+    })
+
+    
+
+</script>

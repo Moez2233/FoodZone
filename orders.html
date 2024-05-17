@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style-main.css">
+
+
+  <title>Orders</title>
+  <style>
+    
+    body {
+      margin: 0;
+      padding: 70px;
+      height: 100vh;
+      background-image: url(/photo/hero-bg.png);
+      
+
+    
+    }
+   
+   
+    .restaurant {
+      display: flex;
+      align-items: center;
+      margin-left: 300px;
+      background-color: aliceblue;
+      border-radius: 1pc;
+       margin-top: 60px;
+       width: 1000px;
+
+
+
+
+    }
+    
+    .restaurant img {
+      width: 200px;
+      height: 200px;
+      border-radius: 10px;
+      margin-right: 10px;
+    }
+    
+    .restaurant .movie-info {
+      flex-grow: 1;
+      text-align: left;
+      border: 1px solid silver;
+      border-radius: 5px;
+      padding-left: 30px;
+      width:30px;
+      background-color: #edece9;
+    }
+    .restaurant .title {
+      font-size: 18px;
+      margin-bottom: 10px;
+      color:black;
+      padding-left: 20px;
+     
+
+
+    }
+    .restaurant .para {
+      font-size: 18px;
+      margin-bottom: 10px;
+      padding-left: 260px;
+      color:black;
+    }
+    .restaurant .description {
+      font-size: 18px;
+      margin-bottom: 10px;
+      padding-left: 200px;
+      color:black;
+    }
+    .restaurant .pa {
+      font-size: 18px;
+      margin-bottom: 10px;
+      padding-left: 280px;
+      color:rgb(81, 75, 75);
+    }
+    
+  </style>
+</head>
+<body>
+  <style>
+    .nav-links ul {
+      list-style:circle;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .nav-links li {
+      display: inline-block;
+      position: relative;
+      padding-left: 40px;
+    }
+    
+    .nav-links li a {
+      display: block;
+      padding: 10px 20px;
+      text-decoration: none;
+      color: #000;
+      
+    }
+   
+    
+    
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      background-color: black;
+      border: 1px solid #ccc;
+      padding: 10px;
+      width: 100%; /* Set the width to 100% */
+      box-sizing: border-box; /* Include padding and border in the width calculation */
+    }
+    
+    
+    
+    .dropdown:hover .dropdown-menu {
+      display: block;
+      width: 100%;
+    }
+    
+  </style>
+  <header>
+    <nav>
+      <nav class="container">
+        <img class="logo" width="240px" src="L2-01.png" alt="">
+        <i id="btn-menu" class="fa-solid fa-bars"></i>
+        <div class="nav-links">
+          <ul>
+            <li><a href="index-main.html" class="active">Home</a></li>
+            <li><a href="index-main.html#about">About</a></li>
+            <li><a href="index-main.html">Services</a></li>
+            <li class="dropdown">
+              <a href="#">Lists Drop</a>
+              <ul class="dropdown-menu">
+                <li><a href="list_rest.html"><span>List Restaurants</span> </a></li>
+                <li><a href="list_cat.html">list Categeries</a></li>
+                <li><a href="list_product.html">list Products</a></li>
+              </ul>
+            </li>
+            <li><a href="index-main.html">Contact</a></li>
+            <li><a href="categery.html" target="_blank">Add Categories</a></li>
+            <li><a href="index.html">Logout</a></li>
+          </ul>
+        </div>
+      </nav>
+    </nav>
+    
+</header>
+
+  <div class="maincontainer">
+    <div class="movies-container" id="restaurants-list"></div>
+  </div>
+
+  <script>
+    (function() {
+      const token = localStorage.getItem('token');
+      if (token) {
+        const headers = {
+          'Authorization': `Token ${token}`
+        };
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const restaurantId = urlParams.get('id');
+
+        fetch(`http://127.0.0.1:8000/orders/resturants/${restaurantId}/orders/`, {
+          headers: headers
+        })
+          .then(response => response.json())
+          .then(data => {
+            const restaurantsList = document.querySelector('#restaurants-list');
+            data.forEach(order => {
+              const orderDiv = document.createElement('div');
+              orderDiv.className = 'restaurant';
+              orderDiv.innerHTML = `
+                <img class="movie-img" src="${order.product_image}" alt="${order.product_name}">
+                <div class="movie-info">
+                  <h3 class="title">Order ID: ${order.id}</h3>
+                  <p class="para"><strong>User Name:</strong> ${order.user_name}</p>
+                  <p class="para"><strong>Name of Product:</strong> ${order.product_name}</p>
+                  <p class="description"><strong>Description:</strong> ${order.product_description}</p>
+
+                  <p class="pa"> ${order.order_date}</p>
+
+
+                  
+                </div>
+              `;
+              restaurantsList.appendChild(orderDiv);
+            });
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      } else {
+        alert('Please log in to view the data.');
+        window.location.href = 'index.html';
+      }
+    })();
+
+    function editOrder(orderId) {
+      // تنفيذ التوجيه لصفحة تحرير الطلب باستخدام معرف الطلب كمعلمة الاستعلام
+      window.location.href = `edit_order.html?id=${orderId}`;
+    }
+
+    function deleteOrder(orderId) {
+      // إرسال طلب DELETE لإزالة الطلب
+      fetch(`http://127.0.0.1:8000/orders/resturants/orders/${orderId}/`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Token ${localStorage.getItem('token')}`
+        }
+      })
+        .then(response => {
+          if (response.ok) {
+            console.log('Order deleted successfully.');
+            location.reload(); // إعادة تحميل الصفحة
+          } else {
+            console.error('Failed to delete order. Status:', response.status);
+          }
+        })
+        .catch(error => {
+          console.error('Error deleting order:', error);
+        });
+    }
+  </script>
+</body>
+</html>
+
+
+
+
+  
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orders</title>
+</head>
+<body>
+  <div id="orders-list"></div>a
+
+  <script>
+    const token = localStorage.getItem('token');
+    if (token) {
+      const headers = {
+        'Authorization': `Token ${token}`
+      };
+  
+  
+      // استخدام تعبير Django لجلب المعرّف
+      const resturantId = '{{ resturant_id }}';
+  
+      fetch(`http://127.0.0.1:8000/orders/resturants/${resturantId}/orders/`, {
+        headers: headers
+      })
+        .then(response => response.json())
+        .then(data => {
+          const ordersList = document.querySelector('#orders-list');
+          data.forEach(order => {
+            const orderDiv = document.createElement('div');
+            orderDiv.textContent = `Order ID: ${order.id}, Total: ${order.product_image}`;
+            ordersList.appendChild(orderDiv);
+          });
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    } else {
+      alert('Please log in to view the data.');
+      window.location.href = 'index.html';
+    }
+  </script>
+  
+   -->
+</body>
+</html>
+
+
